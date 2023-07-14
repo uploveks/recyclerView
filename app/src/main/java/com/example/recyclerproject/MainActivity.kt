@@ -1,29 +1,46 @@
 package com.example.recyclerproject
 
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.recyclerproject.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bookAdapter: BookAdapter
-
+    private var isStaggeredLayout = false
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val books = createBookList()
 
-        bookAdapter = BookAdapter(books)
+        bookAdapter = BookAdapter(books, isStaggeredLayout)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = bookAdapter
         }
 
-    }
+        binding.switchLayout.setOnCheckedChangeListener { _, isChecked ->
+            isStaggeredLayout = isChecked
+            if (isStaggeredLayout) {
+                val staggeredGridLayoutManager =
+                    StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                binding.recyclerView.layoutManager = staggeredGridLayoutManager
+                binding.switchLayout.text = "Staggered Grid"
+            } else {
+                binding.recyclerView.layoutManager = LinearLayoutManager(this)
+                binding.switchLayout.text = "Linear Layout"
+            }
+            bookAdapter.isStaggeredLayout = isStaggeredLayout
 
+            bookAdapter.notifyDataSetChanged()
+        }
+    }
     private fun createBookList(): MutableList<Book>{
         val bookList = mutableListOf<Book>()
 
@@ -31,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         book1.id = 1
         book1.name = "Finding Time Again"
         book1.author = "Marcel Proust"
-        book1.type = "Classic"
+        book1.type = "Science Fiction"
         book1.isFavorite = false
         book1.isbn = "ISBN: 9780141180311"
         book1.bookImageUrl = "https://cdn4.libris.ro/img/pozeprod/28586/28585536-1.jpg"
@@ -42,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         book2.id = 2
         book2.name = "The World's worst Assistant"
         book2.author = "Sona Movsesian"
-        book2.type = "Comedy"
+        book2.type = "Kids"
         book2.isFavorite = false
         book2.isbn = "ISBN: 5278965689027"
         book2.bookImageUrl = "https://images2.penguinrandomhouse.com/cover/9780593185513"
@@ -53,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         book3.id = 3
         book3.name = "The Queen's Assassin"
         book3.author = "Melissa De La Cruz"
-        book3.type = "Fantasy"
+        book3.type = "Science Fiction"
         book3.isFavorite = false
         book3.isbn = "ISBN: 246753234566"
         book3.bookImageUrl = "https://m.media-amazon.com/images/I/91RJSngUfJL._SL1500_.jpg"
@@ -64,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         book4.id = 4
         book4.name = "Winnie-the-Pooh"
         book4.author = "Alan Alexander Milne"
-        book4.type = "Children Literature"
+        book4.type = "Financial"
         book4.isFavorite = false
         book4.isbn = "ISBN: 7654234554322"
         book4.bookImageUrl = "https://m.media-amazon.com/images/I/71XAese2ItL._SL1500_.jpg"
@@ -75,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         book5.id = 5
         book5.name = "Frankenstein"
         book5.author = "Mary Shelley"
-        book5.type = "Horror"
+        book5.type = "Kids"
         book5.isFavorite = false
         book5.isbn = "ISBN: 9235675489027"
         book5.bookImageUrl = "https://cdn4.libris.ro/img/pozeprod/15548/15547065-1.jpg"
@@ -86,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         book6.id = 6
         book6.name = "Born a Crime"
         book6.author = "Trevor Noah"
-        book6.type = "Comedy"
+        book6.type = "Science Fiction"
         book6.isFavorite = false
         book6.isbn = "ISBN: 256976543324"
         book6.bookImageUrl = "https://cdn.dc5.ro/img-prod/1985828-0.jpeg"
@@ -97,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         book7.id = 7
         book7.name = "The Five-Star Weekend"
         book7.author = "Ellin Hilderbrand"
-        book7.type = "Fiction"
+        book7.type = "Financial"
         book7.isFavorite = false
         book7.isbn = "ISBN: 267543259027"
         book7.bookImageUrl = "https://m.media-amazon.com/images/I/71OcyQo+XPL._SL1500_.jpg"
@@ -108,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         book8.id = 8
         book8.name = "The Lord of the Rings"
         book8.author = "John Ronald Tolkien"
-        book8.type = "Fantasy"
+        book8.type = "Kids"
         book8.isFavorite = false
         book8.isbn = "ISBN: 753791918263"
         book8.bookImageUrl = "https://m.media-amazon.com/images/I/71jLBXtWJWL._SL1500_.jpg"
@@ -119,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         book9.id = 9
         book9.name = "Jurassic park"
         book9.author = "Michael Crichton"
-        book9.type = "Adventure"
+        book9.type = "Financial"
         book9.isFavorite = false
         book9.isbn = "ISBN: 12345698765"
         book9.bookImageUrl = "https://m.media-amazon.com/images/I/81rBVCDfrgL._SL1500_.jpg"
@@ -128,5 +145,4 @@ class MainActivity : AppCompatActivity() {
 
         return bookList
     }
-
 }
