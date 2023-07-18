@@ -34,7 +34,7 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
     inner class FinanceLinearViewHolder(private val binding: ItemFinanceBookBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.root.setOnClickListener {
+            binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val book = books[position]
@@ -84,7 +84,7 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
     inner class KidsLinearViewHolder(private val binding: ItemKidsBookBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
 
-            binding.root.setOnClickListener {
+            binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val book = books[position]
@@ -131,7 +131,7 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
 
     inner class SFLinearViewHolder(private val binding: ItemSfBookBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.root.setOnClickListener {
+            binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val book = books[position]
@@ -178,7 +178,7 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
 
     inner class FinanceStaggeredViewHolder(private val binding: FinanceStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.root.setOnClickListener {
+            binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val book = books[position]
@@ -197,7 +197,7 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
 
     inner class SFStaggeredViewHolder(private val binding: SfStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.root.setOnClickListener {
+            binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val book = books[position]
@@ -215,7 +215,7 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
 
     inner class KidsStaggeredViewHolder(private val binding: KidsStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.root.setOnClickListener {
+            binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val book = books[position]

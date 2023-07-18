@@ -6,28 +6,65 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/bookFavorite"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_favorite_unselected"
+        app:layout_constraintTop_toBottomOf="@id/authorImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/isbn"
+        />
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/homeButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/home"
+        android:backgroundTint="@android:color/transparent"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#999999"
+        android:id="@+id/line_separator"
+        app:layout_constraintTop_toBottomOf="@+id/callDialer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <ImageView
         android:id="@+id/bookImage"
-        android:layout_width="190dp"
-        android:layout_height="230dp"
+        android:layout_width="200dp"
+        android:layout_height="290dp"
         android:scaleType="centerCrop"
         android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/callDialer"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/bookName"
-        android:textSize="50sp"
-        app:layout_constraintTop_toBottomOf="@+id/bookImage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:maxLines="3"
+        android:textSize="40sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toStartOf="@+id/shareButton"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="10dp"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/bookImage" />
 
     <ImageView
         android:layout_width="40dp"
@@ -35,7 +72,7 @@
         android:id="@+id/bookTypeIcon"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/bookName"
+        app:layout_constraintTop_toBottomOf="@+id/isbn"
         android:layout_marginTop="10dp"
         tools:ignore="ContentDescription"/>
 
@@ -43,10 +80,10 @@
         android:id="@+id/bookType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="13sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@id/bookTypeIcon"
-        app:layout_constraintTop_toBottomOf="@id/bookName"
-        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/isbn"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="10dp"
         android:hint="@string/book_type"/>
 
@@ -55,26 +92,23 @@
         android:id="@+id/bookAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/bookImage"
-        app:layout_constraintTop_toBottomOf="@id/authorImage"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/authorImage"
+        app:layout_constraintTop_toBottomOf="@id/bookName"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
-        android:textSize="35sp"
+        android:textSize="25sp"
          />
 
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:id="@+id/authorImage"
-        app:layout_constraintStart_toEndOf="@+id/bookImage"
+        app:layout_constraintTop_toBottomOf="@id/bookName"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"
-
         tools:ignore="ContentDescription"
         />
 
@@ -84,23 +118,32 @@
         android:id="@+id/isbn"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bookTypeIcon"
+        app:layout_constraintTop_toBottomOf="@id/authorImage"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
          />
 
-
-    <CheckBox
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/bookFavorite"
-        android:button="@drawable/checkbox_selector"
-        app:layout_constraintTop_toBottomOf="@id/bookAuthor"
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/callDialer"
+        android:src="@drawable/call_dialer"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/bookImage"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-         />
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@android:color/transparent"
+        />
+
+    <ImageButton
+        android:id="@+id/shareButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@android:color/transparent"
+        android:src="@drawable/share_button"
+        app:layout_constraintBottom_toBottomOf="@id/bookName"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
