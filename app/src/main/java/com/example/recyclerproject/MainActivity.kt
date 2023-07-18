@@ -4,6 +4,7 @@ package com.example.recyclerproject
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.recyclerproject.databinding.ActivityMainBinding
@@ -18,14 +19,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val books = createBookList()
-
         bookAdapter = BookAdapter(books, isStaggeredLayout)
+
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = bookAdapter
+            itemAnimator = DefaultItemAnimator()
         }
 
-        binding.switchLayout.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchLayout.setOnCheckedChangeListener { _ , isChecked ->
             isStaggeredLayout = isChecked
             if (isStaggeredLayout) {
                 val staggeredGridLayoutManager =
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
             bookAdapter.notifyDataSetChanged()
         }
+
     }
     private fun createBookList(): MutableList<Book>{
         val bookList = mutableListOf<Book>()

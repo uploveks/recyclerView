@@ -3,4 +3,5 @@
     <string name="type">Type</string>
     <string name="book_type">Book type</string>
     <string name="linear_grid">Linear Layout</string>
+    <string name="details">Details</string>
 </resources>

@@ -1,6 +1,9 @@
 package com.example.recyclerproject
 
 
+
+import android.content.Intent
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,8 +17,10 @@ import com.example.recyclerproject.databinding.FinanceStaggeredBinding
 import com.example.recyclerproject.databinding.SfStaggeredBinding
 import com.example.recyclerproject.databinding.KidsStaggeredBinding
 
-class BookAdapter(private val books: MutableList<Book>,  public var isStaggeredLayout: Boolean):
+class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: Boolean):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+
     companion object {
         private const val TYPE_FINANCIAL_LINEAR = 0
         private const val TYPE_S_F_LINEAR = 1
@@ -29,27 +34,30 @@ class BookAdapter(private val books: MutableList<Book>,  public var isStaggeredL
     inner class FinanceLinearViewHolder(private val binding: ItemFinanceBookBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.bookTrash.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val deletedBook = books[position]
-                    books.removeAt(position)
-                    notifyItemRemoved(position)
-                }
-            }
 
-            binding.bookFavorite.setOnCheckedChangeListener(null)
-            binding.bookFavorite.setOnCheckedChangeListener { _, isChecked ->
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val book = books[position]
-                    if (book.isFavorite != isChecked) {
-                        book.isFavorite = isChecked
-                        notifyItemChanged(position)
+                binding.bookTrash.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val deletedBook = books[position]
+                        books.removeAt(position)
+                        notifyItemRemoved(position)
+                    }
+                }
+
+                binding.bookFavorite.setOnCheckedChangeListener(null)
+                binding.bookFavorite.setOnCheckedChangeListener { _, isChecked ->
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val book = books[position]
+                        if (book.isFavorite != isChecked) {
+                            book.isFavorite = isChecked
+                            notifyItemChanged(position)
+                        }
                     }
                 }
             }
-        }
+
+
 
         fun bind(book: Book) {
             val bookTypeImage = R.drawable.finance
@@ -68,6 +76,7 @@ class BookAdapter(private val books: MutableList<Book>,  public var isStaggeredL
 
     inner class KidsLinearViewHolder(private val binding: ItemKidsBookBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
+
             binding.bookTrash.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -107,6 +116,8 @@ class BookAdapter(private val books: MutableList<Book>,  public var isStaggeredL
 
     inner class SFLinearViewHolder(private val binding: ItemSfBookBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
+
+
             binding.bookTrash.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -145,7 +156,10 @@ class BookAdapter(private val books: MutableList<Book>,  public var isStaggeredL
     }
 
     inner class FinanceStaggeredViewHolder(private val binding: FinanceStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(book: Book) {
+
+
             Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
             binding.bookAuthor.text = book.author
             binding.isbn.text = book.isbn
@@ -153,6 +167,7 @@ class BookAdapter(private val books: MutableList<Book>,  public var isStaggeredL
     }
 
     inner class SFStaggeredViewHolder(private val binding: SfStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(book: Book) {
             Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
             Glide.with(binding.root).load(book.authorImageUrl).error(R.mipmap.ic_launcher).into(binding.authorImage)
@@ -162,6 +177,7 @@ class BookAdapter(private val books: MutableList<Book>,  public var isStaggeredL
     }
 
     inner class KidsStaggeredViewHolder(private val binding: KidsStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(book: Book) {
             Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
             Glide.with(binding.root).load(book.authorImageUrl).error(R.mipmap.ic_launcher).into(binding.authorImage)
@@ -199,6 +215,8 @@ class BookAdapter(private val books: MutableList<Book>,  public var isStaggeredL
 
             else -> {throw IllegalArgumentException("Invalid view type")}
         }
+
+
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -240,8 +258,4 @@ class BookAdapter(private val books: MutableList<Book>,  public var isStaggeredL
         return books.size
     }
 
-    /*fun setStaggeredLayout(isStaggeredLayout: Boolean) {
-        this.isStaggeredLayout = isStaggeredLayout
-        notifyDataSetChanged()
-    }*/
 }

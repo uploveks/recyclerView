@@ -1,6 +1,8 @@
 package com.example.recyclerproject
 
-class Book {
+import java.io.Serializable
+
+class Book : Serializable {
     var id: Int = 0
     var name: String = ""
     var author: String = ""
@@ -9,4 +11,5 @@ class Book {
     var isbn: String = ""
     var bookImageUrl: String = ""
     var authorImageUrl: String = ""
+    var details: String = ""
 }
