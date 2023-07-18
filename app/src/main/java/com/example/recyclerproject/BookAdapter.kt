@@ -3,7 +3,6 @@ package com.example.recyclerproject
 
 
 import android.content.Intent
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -16,8 +15,9 @@ import com.example.recyclerproject.databinding.ItemKidsBookBinding
 import com.example.recyclerproject.databinding.FinanceStaggeredBinding
 import com.example.recyclerproject.databinding.SfStaggeredBinding
 import com.example.recyclerproject.databinding.KidsStaggeredBinding
+import com.example.recyclerproject.OnBookClickListener
 
-class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: Boolean):
+class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: Boolean, private val listener: OnBookClickListener):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -34,6 +34,13 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
     inner class FinanceLinearViewHolder(private val binding: ItemFinanceBookBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val book = books[position]
+                    listener.onBookClicked(book)
+                }
+            }
 
                 binding.bookTrash.setOnClickListener {
                     val position = adapterPosition
@@ -77,6 +84,14 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
     inner class KidsLinearViewHolder(private val binding: ItemKidsBookBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
 
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val book = books[position]
+                    listener.onBookClicked(book)
+                }
+            }
+
             binding.bookTrash.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -116,7 +131,13 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
 
     inner class SFLinearViewHolder(private val binding: ItemSfBookBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val book = books[position]
+                    listener.onBookClicked(book)
+                }
+            }
 
             binding.bookTrash.setOnClickListener {
                 val position = adapterPosition
@@ -156,7 +177,15 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
     }
 
     inner class FinanceStaggeredViewHolder(private val binding: FinanceStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
-
+        init {
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val book = books[position]
+                    listener.onBookClicked(book)
+                }
+            }
+        }
         fun bind(book: Book) {
 
 
@@ -167,7 +196,15 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
     }
 
     inner class SFStaggeredViewHolder(private val binding: SfStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
-
+        init {
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val book = books[position]
+                    listener.onBookClicked(book)
+                }
+            }
+        }
         fun bind(book: Book) {
             Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
             Glide.with(binding.root).load(book.authorImageUrl).error(R.mipmap.ic_launcher).into(binding.authorImage)
@@ -177,7 +214,15 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
     }
 
     inner class KidsStaggeredViewHolder(private val binding: KidsStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
-
+        init {
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val book = books[position]
+                    listener.onBookClicked(book)
+                }
+            }
+        }
         fun bind(book: Book) {
             Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
             Glide.with(binding.root).load(book.authorImageUrl).error(R.mipmap.ic_launcher).into(binding.authorImage)

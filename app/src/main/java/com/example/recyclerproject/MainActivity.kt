@@ -2,6 +2,7 @@ package com.example.recyclerproject
 
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -9,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.recyclerproject.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnBookClickListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bookAdapter: BookAdapter
     private var isStaggeredLayout = false
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val books = createBookList()
-        bookAdapter = BookAdapter(books, isStaggeredLayout)
+        bookAdapter = BookAdapter(books, isStaggeredLayout, this)
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -44,6 +45,13 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onBookClicked(book: Book) {
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra("book", book)
+        startActivity(intent)
+    }
+
     private fun createBookList(): MutableList<Book>{
         val bookList = mutableListOf<Book>()
 
