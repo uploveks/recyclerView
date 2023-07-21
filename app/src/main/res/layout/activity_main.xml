@@ -17,10 +17,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/switchLayout"
-        android:text="@string/linear_grid"
+        android:text="@string/view"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         tools:ignore="UseSwitchCompatOrMaterialXml"
+        android:track="@drawable/switch_backgrounds"
         />
 
     <ProgressBar
@@ -34,10 +35,33 @@
     <LinearLayout
         android:id="@+id/errorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:background="@drawable/error_background"
+        android:elevation="5dp"
+        android:padding="16dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/errorImage"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/errorMessageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Error"
+            android:textStyle="bold"
+            android:textColor="#ff2c2c"
+            android:textSize="25sp"
+            android:background="@drawable/error_background"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_gravity="center_horizontal" />
+
 
         <TextView
             android:id="@+id/errorMessage"
@@ -45,18 +69,23 @@
             android:layout_height="wrap_content"
             android:text="@string/error_fetching_books"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="8dp"/>
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="8dp" />
 
         <Button
             android:id="@+id/retryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/retry"
+            android:textSize="20sp"
             android:textColor="@android:color/white"
-            android:layout_marginTop="20dp"
-            android:background="@color/black"/>
+            android:background="@drawable/button_rounded_corners"
+            android:elevation="5dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp" />
     </LinearLayout>
 
 

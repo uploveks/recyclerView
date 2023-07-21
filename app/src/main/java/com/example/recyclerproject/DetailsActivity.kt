@@ -1,3 +1,5 @@
+package com.example.recyclerproject
+
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -12,9 +14,6 @@ import java.lang.IllegalArgumentException
 import android.Manifest
 import android.graphics.Bitmap
 import android.net.Uri
-import com.example.recyclerproject.Book
-import com.example.recyclerproject.MainActivity
-import com.example.recyclerproject.R
 
 
 class DetailsActivity : AppCompatActivity() {
@@ -68,8 +67,8 @@ class DetailsActivity : AppCompatActivity() {
 
         binding.bookFavorite.isEnabled = false
         var bookType = when (book.bookType) {
-            "Financial" -> R.drawable.finance
-            "Science Fiction" -> R.drawable.fiction_type
+            "Finance" -> R.drawable.finance
+            "Fictional" -> R.drawable.fiction_type
             "Kids" -> R.drawable.children_literature
             else -> {R.drawable.default_clip_art}
         }
