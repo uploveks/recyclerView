@@ -1,5 +1,3 @@
-package com.example.recyclerproject
-
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +12,9 @@ import java.lang.IllegalArgumentException
 import android.Manifest
 import android.graphics.Bitmap
 import android.net.Uri
+import com.example.recyclerproject.Book
+import com.example.recyclerproject.MainActivity
+import com.example.recyclerproject.R
 
 
 class DetailsActivity : AppCompatActivity() {
@@ -55,18 +56,18 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     private fun populateBookDetails() {
-        binding.bookName.text = book.name
-        binding.bookAuthor.text = book.author
-        binding.bookType.text = book.type
+        binding.bookName.text = book.bookName
+        binding.bookAuthor.text = book.authorName
+        binding.bookType.text = book.bookType
         binding.isbn.text = book.isbn
-        if (book.isFavorite) {
+        if (book.favorite) {
             binding.bookFavorite.setImageResource(R.drawable.ic_favorite_selected)
         } else {
             binding.bookFavorite.setImageResource(R.drawable.ic_favorite_unselected)
         }
 
         binding.bookFavorite.isEnabled = false
-        var bookType = when (book.type) {
+        var bookType = when (book.bookType) {
             "Financial" -> R.drawable.finance
             "Science Fiction" -> R.drawable.fiction_type
             "Kids" -> R.drawable.children_literature
@@ -74,8 +75,8 @@ class DetailsActivity : AppCompatActivity() {
         }
         binding.bookTypeIcon.setImageResource(bookType)
 
-        Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
-        Glide.with(binding.root).load(book.authorImageUrl).error(R.mipmap.ic_launcher).into(binding.authorImage)
+        Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
+        Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
     }
 
     private fun requestCameraPermission() {
@@ -119,7 +120,7 @@ class DetailsActivity : AppCompatActivity() {
     private fun shareBookTitle() {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_TEXT, book.name)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, book.bookName)
         startActivity(Intent.createChooser(shareIntent, "Share Book Title"))
     }
 

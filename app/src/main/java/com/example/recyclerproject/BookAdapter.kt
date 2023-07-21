@@ -56,8 +56,8 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
                     val position = adapterPosition
                     if (position != RecyclerView.NO_POSITION) {
                         val book = books[position]
-                        if (book.isFavorite != isChecked) {
-                            book.isFavorite = isChecked
+                        if (book.favorite != isChecked) {
+                            book.favorite = isChecked
                             notifyItemChanged(position)
                         }
                     }
@@ -70,14 +70,14 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
             val bookTypeImage = R.drawable.finance
 
             binding.bookTypeIcon.setImageResource(bookTypeImage)
-            Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
-            Glide.with(binding.root).load(book.authorImageUrl).error(R.mipmap.ic_launcher).into(binding.authorImage)
-            binding.bookName.text = book.name
-            binding.bookAuthor.text = book.author
-            binding.bookType.text = book.type
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
+            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
+            binding.bookName.text = book.bookName
+            binding.bookAuthor.text = book.authorName
+            binding.bookType.text = book.bookType
             binding.isbn.text = book.isbn
 
-            binding.bookFavorite.isChecked = book.isFavorite
+            binding.bookFavorite.isChecked = book.favorite
         }
     }
 
@@ -106,8 +106,8 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val book = books[position]
-                    if (book.isFavorite != isChecked) {
-                        book.isFavorite = isChecked
+                    if (book.favorite != isChecked) {
+                        book.favorite = isChecked
                         notifyItemChanged(position)
                     }
                 }
@@ -118,14 +118,14 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
             val bookTypeImage = R.drawable.children_literature
 
             binding.bookTypeIcon.setImageResource(bookTypeImage)
-            Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
-            Glide.with(binding.root).load(book.authorImageUrl).error(R.mipmap.ic_launcher).into(binding.authorImage)
-            binding.bookName.text = book.name
-            binding.bookAuthor.text = book.author
-            binding.bookType.text = book.type
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
+            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
+            binding.bookName.text = book.bookName
+            binding.bookAuthor.text = book.authorName
+            binding.bookType.text = book.bookType
             binding.isbn.text = book.isbn
 
-            binding.bookFavorite.isChecked = book.isFavorite
+            binding.bookFavorite.isChecked = book.favorite
         }
     }
 
@@ -153,8 +153,8 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val book = books[position]
-                    if (book.isFavorite != isChecked) {
-                        book.isFavorite = isChecked
+                    if (book.favorite != isChecked) {
+                        book.favorite = isChecked
                         notifyItemChanged(position)
                     }
                 }
@@ -165,14 +165,14 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
             val bookTypeImage = R.drawable.fantasy
 
             binding.bookTypeIcon.setImageResource(bookTypeImage)
-            Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
-            Glide.with(binding.root).load(book.authorImageUrl).error(R.mipmap.ic_launcher).into(binding.authorImage)
-            binding.bookName.text = book.name
-            binding.bookAuthor.text = book.author
-            binding.bookType.text = book.type
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
+            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
+            binding.bookName.text = book.bookName
+            binding.bookAuthor.text = book.authorName
+            binding.bookType.text = book.bookType
             binding.isbn.text = book.isbn
 
-            binding.bookFavorite.isChecked = book.isFavorite
+            binding.bookFavorite.isChecked = book.favorite
         }
     }
 
@@ -189,8 +189,8 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
         fun bind(book: Book) {
 
 
-            Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
-            binding.bookAuthor.text = book.author
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
+            binding.bookAuthor.text = book.authorName
             binding.isbn.text = book.isbn
         }
     }
@@ -206,9 +206,9 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
             }
         }
         fun bind(book: Book) {
-            Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
-            Glide.with(binding.root).load(book.authorImageUrl).error(R.mipmap.ic_launcher).into(binding.authorImage)
-            binding.bookAuthor.text = book.author
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
+            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
+            binding.bookAuthor.text = book.authorName
             binding.isbn.text = book.isbn
         }
     }
@@ -224,9 +224,9 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
             }
         }
         fun bind(book: Book) {
-            Glide.with(binding.root).load(book.bookImageUrl).error(R.mipmap.ic_launcher).into(binding.bookImage)
-            Glide.with(binding.root).load(book.authorImageUrl).error(R.mipmap.ic_launcher).into(binding.authorImage)
-            binding.bookAuthor.text = book.author
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
+            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
+            binding.bookAuthor.text = book.authorName
         }
     }
 
@@ -282,17 +282,17 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
 
         return when {
             !isStaggeredLayout -> {
-                when (book.type) {
-                    "Financial" -> TYPE_FINANCIAL_LINEAR
-                    "Science Fiction" -> TYPE_S_F_LINEAR
+                when (book.bookType) {
+                    "Finance" -> TYPE_FINANCIAL_LINEAR
+                    "Fictional" -> TYPE_S_F_LINEAR
                     "Kids" -> TYPE_KIDS_LINEAR
                     else ->throw IllegalArgumentException("Invalid book type")
                 }
             }
             else -> {
-                when (book.type) {
-                    "Financial" -> TYPE_FINANCIAL_STAGGERED
-                    "Science Fiction" -> TYPE_S_F_STAGGERED
+                when (book.bookType) {
+                    "Finance" -> TYPE_FINANCIAL_STAGGERED
+                    "Fictional" -> TYPE_S_F_STAGGERED
                     "Kids" -> TYPE_KIDS_STAGGERED
                     else -> throw IllegalArgumentException("Invalid book type")
                 }
@@ -301,6 +301,12 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
     }
     override fun getItemCount(): Int {
         return books.size
+    }
+
+    fun updateBooks(newBooks: List<Book>) {
+        books.clear()
+        books.addAll(newBooks)
+        notifyDataSetChanged()
     }
 
 }

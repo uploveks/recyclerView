@@ -4,4 +4,6 @@
     <string name="book_type">Book type</string>
     <string name="linear_grid">Linear Layout</string>
     <string name="details">Details</string>
+    <string name="error_fetching_books">Error fetching books</string>
+    <string name="retry">Retry</string>
 </resources>
