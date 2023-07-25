@@ -1,10 +1,11 @@
 package com.example.recyclerproject
 
 
-
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
@@ -21,7 +22,12 @@ import com.example.recyclerproject.databinding.SfStaggeredBinding
 import com.example.recyclerproject.databinding.KidsStaggeredBinding
 import com.example.recyclerproject.OnBookClickListener
 
-class BookAdapter(private val context: Context, private val books: MutableList<Book>, var isStaggeredLayout: Boolean, private val listener: OnBookClickListener):
+class BookAdapter(
+    private val context: Context,
+    private val books: MutableList<Book>,
+    var isStaggeredLayout: Boolean,
+    private val listener: OnBookClickListener
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
 
@@ -35,11 +41,11 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
 
     }
 
-    private var booksList: MutableList<Book> = arrayListOf()
-    private var filteredBooks: MutableList<Book> = books
+    private var filteredBooks: MutableList<Book> = mutableListOf()
 
 
-    inner class FinanceLinearViewHolder(private val binding: ItemFinanceBookBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class FinanceLinearViewHolder(private val binding: ItemFinanceBookBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.bookDetails.setOnClickListener {
@@ -50,33 +56,34 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
                 }
             }
 
-                binding.bookTrash.setOnClickListener {
-                    val position = adapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        val deletedBook = books[position]
-                        books.removeAt(position)
-                        notifyItemRemoved(position)
-                    }
-                }
-
-
-                binding.bookFavorite.setOnCheckedChangeListener { button, isChecked ->
-                    if (button.isPressed){
-                        val book = books[adapterPosition]
-                        book.favorite = isChecked
-                        notifyItemChanged(adapterPosition)
-                    }
+            binding.bookTrash.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val deletedBook = books[position]
+                    books.removeAt(position)
+                    notifyItemRemoved(position)
                 }
             }
 
+
+            binding.bookFavorite.setOnCheckedChangeListener { button, isChecked ->
+                if (button.isPressed) {
+                    val book = books[adapterPosition]
+                    book.favorite = isChecked
+                    notifyItemChanged(adapterPosition)
+                }
+            }
+        }
 
 
         fun bind(book: Book) {
             val bookTypeImage = R.drawable.finance
 
             binding.bookTypeIcon.setImageResource(bookTypeImage)
-            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
-            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher)
+                .into(binding.bookImage)
+            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher)
+                .into(binding.authorImage)
             binding.bookName.text = book.bookName
             binding.bookAuthor.text = book.authorName
             binding.bookType.text = book.bookType
@@ -86,7 +93,8 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
         }
     }
 
-    inner class KidsLinearViewHolder(private val binding: ItemKidsBookBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class KidsLinearViewHolder(private val binding: ItemKidsBookBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
 
             binding.bookDetails.setOnClickListener {
@@ -107,7 +115,7 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
             }
 
             binding.bookFavorite.setOnCheckedChangeListener { button, isChecked ->
-                if (button.isPressed){
+                if (button.isPressed) {
                     val book = books[adapterPosition]
                     book.favorite = isChecked
                     notifyItemChanged(adapterPosition)
@@ -119,8 +127,10 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
             val bookTypeImage = R.drawable.children_literature
 
             binding.bookTypeIcon.setImageResource(bookTypeImage)
-            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
-            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher)
+                .into(binding.bookImage)
+            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher)
+                .into(binding.authorImage)
             binding.bookName.text = book.bookName
             binding.bookAuthor.text = book.authorName
             binding.bookType.text = book.bookType
@@ -130,7 +140,8 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
         }
     }
 
-    inner class SFLinearViewHolder(private val binding: ItemSfBookBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class SFLinearViewHolder(private val binding: ItemSfBookBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
@@ -150,7 +161,7 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
             }
 
             binding.bookFavorite.setOnCheckedChangeListener { button, isChecked ->
-                if (button.isPressed){
+                if (button.isPressed) {
                     val book = books[adapterPosition]
                     book.favorite = isChecked
                     notifyItemChanged(adapterPosition)
@@ -162,8 +173,10 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
             val bookTypeImage = R.drawable.fantasy
 
             binding.bookTypeIcon.setImageResource(bookTypeImage)
-            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
-            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher)
+                .into(binding.bookImage)
+            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher)
+                .into(binding.authorImage)
             binding.bookName.text = book.bookName
             binding.bookAuthor.text = book.authorName
             binding.bookType.text = book.bookType
@@ -173,7 +186,8 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
         }
     }
 
-    inner class FinanceStaggeredViewHolder(private val binding: FinanceStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class FinanceStaggeredViewHolder(private val binding: FinanceStaggeredBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
@@ -183,16 +197,19 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
                 }
             }
         }
+
         fun bind(book: Book) {
 
 
-            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher)
+                .into(binding.bookImage)
             binding.bookAuthor.text = book.authorName
             binding.isbn.text = book.isbn
         }
     }
 
-    inner class SFStaggeredViewHolder(private val binding: SfStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class SFStaggeredViewHolder(private val binding: SfStaggeredBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
@@ -202,15 +219,19 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
                 }
             }
         }
+
         fun bind(book: Book) {
-            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
-            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher)
+                .into(binding.bookImage)
+            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher)
+                .into(binding.authorImage)
             binding.bookAuthor.text = book.authorName
             binding.isbn.text = book.isbn
         }
     }
 
-    inner class KidsStaggeredViewHolder(private val binding: KidsStaggeredBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class KidsStaggeredViewHolder(private val binding: KidsStaggeredBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
@@ -220,9 +241,12 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
                 }
             }
         }
+
         fun bind(book: Book) {
-            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
-            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
+            Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher)
+                .into(binding.bookImage)
+            Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher)
+                .into(binding.authorImage)
             binding.bookAuthor.text = book.authorName
         }
     }
@@ -234,35 +258,42 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
                 val binding = ItemFinanceBookBinding.inflate(inflater, parent, false)
                 FinanceLinearViewHolder(binding)
             }
+
             TYPE_S_F_LINEAR -> {
                 val binding = ItemSfBookBinding.inflate(inflater, parent, false)
                 SFLinearViewHolder(binding)
             }
+
             TYPE_KIDS_LINEAR -> {
                 val binding = ItemKidsBookBinding.inflate(inflater, parent, false)
                 KidsLinearViewHolder(binding)
             }
+
             TYPE_FINANCIAL_STAGGERED -> {
                 val binding = FinanceStaggeredBinding.inflate(inflater, parent, false)
                 FinanceStaggeredViewHolder(binding)
             }
+
             TYPE_S_F_STAGGERED -> {
                 val binding = SfStaggeredBinding.inflate(inflater, parent, false)
                 SFStaggeredViewHolder(binding)
             }
+
             TYPE_KIDS_STAGGERED -> {
                 val binding = KidsStaggeredBinding.inflate(inflater, parent, false)
                 KidsStaggeredViewHolder(binding)
             }
 
-            else -> {throw IllegalArgumentException(context.getString(R.string.invalid_view))}
+            else -> {
+                throw IllegalArgumentException(context.getString(R.string.invalid_view))
+            }
         }
 
 
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val book = books[position]
+        val book = filteredBooks[position]
         when (holder) {
             is FinanceLinearViewHolder -> holder.bind(book)
             is SFLinearViewHolder -> holder.bind(book)
@@ -271,11 +302,12 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
             is SFStaggeredViewHolder -> holder.bind(book)
             is KidsStaggeredViewHolder -> holder.bind(book)
 
-            else -> throw IllegalArgumentException(context.getString(R.string.invalid_viewholder)) }
+            else -> throw IllegalArgumentException(context.getString(R.string.invalid_viewholder))
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
-        val book = books[position]
+        val book = filteredBooks[position]
 
         return when {
             !isStaggeredLayout -> {
@@ -283,9 +315,10 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
                     context.getString(R.string.finance_type) -> TYPE_FINANCIAL_LINEAR
                     context.getString(R.string.sf_type) -> TYPE_S_F_LINEAR
                     context.getString(R.string.kids_type) -> TYPE_KIDS_LINEAR
-                    else ->throw IllegalArgumentException(context.getString(R.string.invalid_view))
+                    else -> throw IllegalArgumentException(context.getString(R.string.invalid_view))
                 }
             }
+
             else -> {
                 when (book.bookType) {
                     context.getString(R.string.finance_type) -> TYPE_FINANCIAL_STAGGERED
@@ -296,6 +329,7 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
             }
         }
     }
+
     override fun getItemCount(): Int {
         return filteredBooks.size
     }
@@ -303,28 +337,36 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
     fun updateBooks(newBooks: List<Book>) {
         books.clear()
         books.addAll(newBooks)
+        filteredBooks.addAll(newBooks)
         notifyDataSetChanged()
     }
 
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
+                Log.d("test_adapter", "non filtered size: " + books.size)
                 val charString = constraint?.toString()?.lowercase()?.trim() ?: ""
-                filteredBooks = if (charString.isEmpty()) {
+              val  filteredBooks = if (charString.isEmpty()) {
                     books.toMutableList()
                 } else {
                     val filteredList = books.filter {
-                        it.bookName?.lowercase()?.trim()?.contains(charString, true) == true ||
-                                it.authorName?.lowercase()?.trim()?.contains(charString, true) == true
+                        it.bookName?.lowercase()?.contains(charString, true) == true ||
+                                it.authorName?.lowercase()?.contains(charString, true) == true
                     }.toMutableList()
                     filteredList
                 }
-                return FilterResults().apply { values = filteredBooks }
+                val results = FilterResults()
+                Log.d("test_adapter", "size: " + filteredBooks.size)
+                results.values = filteredBooks
+                return results
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                @Suppress("UNCHECKED_CAST")
-                filteredBooks = results?.values as MutableList<Book>? ?: mutableListOf()
+                filteredBooks.clear()
+                val list = results?.values as MutableList<Book>
+                Log.d("test_adapter", "size in publishResults before: " +( list).size)
+                val wasAdded = filteredBooks.addAll(list)
+                Log.d("test_adapter", "size in publishResults: " + filteredBooks.size+" was added ${wasAdded}")
                 notifyDataSetChanged()
             }
         }

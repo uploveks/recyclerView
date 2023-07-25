@@ -17,6 +17,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.Switch
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,10 +39,9 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class MainActivity : AppCompatActivity(), OnBookClickListener, SearchView.OnQueryTextListener {
+class MainActivity : AppCompatActivity(), OnBookClickListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bookAdapter: BookAdapter
-    private lateinit var searchView: SearchView
     private var isStaggeredLayout = false
     private var progressBar: ProgressBar? = null
 
@@ -65,14 +65,16 @@ class MainActivity : AppCompatActivity(), OnBookClickListener, SearchView.OnQuer
         progressBar = binding.progressBar
         progressBar?.visibility = View.VISIBLE
 
+        //val filteredBooks = ArrayList<Book>()
         bookAdapter = BookAdapter(this, mutableListOf(), isStaggeredLayout, this)
-
+        //bookAdapter.setFilteredBooks(filteredBooks)
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = bookAdapter
             itemAnimator = DefaultItemAnimator()
         }
+
 
 
         binding.switchLayout.setOnCheckedChangeListener { _, isChecked ->
@@ -89,16 +91,16 @@ class MainActivity : AppCompatActivity(), OnBookClickListener, SearchView.OnQuer
             bookAdapter.notifyDataSetChanged()
         }
 
-        binding.searchBox.searchEditText.addTextChangedListener(object : TextWatcher {
+        val editTextSearch = binding.searchBox.searchEditText
+        editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                bookAdapter.filter.filter(s)
+                bookAdapter.filter.filter(s.toString())
             }
         })
-
 
 
         fetchBooksFromServer()
@@ -188,7 +190,7 @@ class MainActivity : AppCompatActivity(), OnBookClickListener, SearchView.OnQuer
         startActivity(intent)
     }
 
-     override fun onQueryTextSubmit(constraint: String?): Boolean {
+     /*override fun onQueryTextSubmit(constraint: String?): Boolean {
         //bookAdapter.filter.filter(constraint)
         return false
     }
@@ -196,6 +198,6 @@ class MainActivity : AppCompatActivity(), OnBookClickListener, SearchView.OnQuer
     override fun onQueryTextChange(constraint: String?): Boolean {
         bookAdapter.filter.filter(constraint)
         return false
-    }
+    }*/
 }
 
