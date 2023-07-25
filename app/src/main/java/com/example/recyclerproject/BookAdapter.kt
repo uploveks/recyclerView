@@ -2,9 +2,13 @@ package com.example.recyclerproject
 
 
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
+import androidx.core.content.res.TypedArrayUtils.getString
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import java.lang.IllegalArgumentException
@@ -17,8 +21,8 @@ import com.example.recyclerproject.databinding.SfStaggeredBinding
 import com.example.recyclerproject.databinding.KidsStaggeredBinding
 import com.example.recyclerproject.OnBookClickListener
 
-class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: Boolean, private val listener: OnBookClickListener):
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BookAdapter(private val context: Context, private val books: MutableList<Book>, var isStaggeredLayout: Boolean, private val listener: OnBookClickListener):
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
 
     companion object {
@@ -30,6 +34,10 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
         private const val TYPE_KIDS_STAGGERED = 5
 
     }
+
+    private var booksList: MutableList<Book> = arrayListOf()
+    private var filteredBooksList: MutableList<Book> = arrayListOf()
+
 
     inner class FinanceLinearViewHolder(private val binding: ItemFinanceBookBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -51,15 +59,12 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
                     }
                 }
 
-                binding.bookFavorite.setOnCheckedChangeListener(null)
-                binding.bookFavorite.setOnCheckedChangeListener { _, isChecked ->
-                    val position = adapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        val book = books[position]
-                        if (book.favorite != isChecked) {
-                            book.favorite = isChecked
-                            notifyItemChanged(position)
-                        }
+
+                binding.bookFavorite.setOnCheckedChangeListener { button, isChecked ->
+                    if (button.isPressed){
+                        val book = books[adapterPosition]
+                        book.favorite = isChecked
+                        notifyItemChanged(adapterPosition)
                     }
                 }
             }
@@ -101,15 +106,11 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
                 }
             }
 
-            binding.bookFavorite.setOnCheckedChangeListener(null)
-            binding.bookFavorite.setOnCheckedChangeListener { _, isChecked ->
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val book = books[position]
-                    if (book.favorite != isChecked) {
-                        book.favorite = isChecked
-                        notifyItemChanged(position)
-                    }
+            binding.bookFavorite.setOnCheckedChangeListener { button, isChecked ->
+                if (button.isPressed){
+                    val book = books[adapterPosition]
+                    book.favorite = isChecked
+                    notifyItemChanged(adapterPosition)
                 }
             }
         }
@@ -148,15 +149,11 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
                 }
             }
 
-            binding.bookFavorite.setOnCheckedChangeListener(null)
-            binding.bookFavorite.setOnCheckedChangeListener { _, isChecked ->
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val book = books[position]
-                    if (book.favorite != isChecked) {
-                        book.favorite = isChecked
-                        notifyItemChanged(position)
-                    }
+            binding.bookFavorite.setOnCheckedChangeListener { button, isChecked ->
+                if (button.isPressed){
+                    val book = books[adapterPosition]
+                    book.favorite = isChecked
+                    notifyItemChanged(adapterPosition)
                 }
             }
         }
@@ -258,7 +255,7 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
                 KidsStaggeredViewHolder(binding)
             }
 
-            else -> {throw IllegalArgumentException("Invalid view type")}
+            else -> {throw IllegalArgumentException(context.getString(R.string.invalid_view))}
         }
 
 
@@ -274,7 +271,7 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
             is SFStaggeredViewHolder -> holder.bind(book)
             is KidsStaggeredViewHolder -> holder.bind(book)
 
-            else -> throw IllegalArgumentException("Invalid ViewHolder") }
+            else -> throw IllegalArgumentException(context.getString(R.string.invalid_viewholder)) }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -283,18 +280,18 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
         return when {
             !isStaggeredLayout -> {
                 when (book.bookType) {
-                    "Finance" -> TYPE_FINANCIAL_LINEAR
-                    "Fictional" -> TYPE_S_F_LINEAR
-                    "Kids" -> TYPE_KIDS_LINEAR
-                    else ->throw IllegalArgumentException("Invalid book type")
+                    context.getString(R.string.finance_type) -> TYPE_FINANCIAL_LINEAR
+                    context.getString(R.string.sf_type) -> TYPE_S_F_LINEAR
+                    context.getString(R.string.kids_type) -> TYPE_KIDS_LINEAR
+                    else ->throw IllegalArgumentException(context.getString(R.string.invalid_view))
                 }
             }
             else -> {
                 when (book.bookType) {
-                    "Finance" -> TYPE_FINANCIAL_STAGGERED
-                    "Fictional" -> TYPE_S_F_STAGGERED
-                    "Kids" -> TYPE_KIDS_STAGGERED
-                    else -> throw IllegalArgumentException("Invalid book type")
+                    context.getString(R.string.finance_type) -> TYPE_FINANCIAL_STAGGERED
+                    context.getString(R.string.sf_type) -> TYPE_S_F_STAGGERED
+                    context.getString(R.string.kids_type) -> TYPE_KIDS_STAGGERED
+                    else -> throw IllegalArgumentException(context.getString(R.string.invalid_view))
                 }
             }
         }
@@ -309,4 +306,32 @@ class BookAdapter(private val books: MutableList<Book>, var isStaggeredLayout: B
         notifyDataSetChanged()
     }
 
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charString = constraint?.toString()?.trim() ?: ""
+                if (charString.isEmpty()) {
+                    filteredBooksList = books.toMutableList()
+                } else {
+                    val filteredList = ArrayList<Book>()
+                    val filterPattern = constraint.toString().lowercase().trim()
+                    for (book in books) {
+                        if ((book.bookName?.lowercase()?.contains(charString, true) == true) || (book.authorName?.lowercase()?.contains(charString, true) == true)) {
+                            filteredList.add(book)
+                        }
+                    }
+                    filteredBooksList = filteredList
+                }
+                return FilterResults().apply { values = filteredBooksList }
+            }
+
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                @Suppress("UNCHECKED_CAST")
+                filteredBooksList = results?.values as MutableList<Book>? ?: mutableListOf()
+                notifyDataSetChanged()
+            }
+        }
+    }
+
 }
+

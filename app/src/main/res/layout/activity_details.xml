@@ -7,24 +7,27 @@
 
     <ImageView
         android:id="@+id/bookFavorite"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_favorite_unselected"
         app:layout_constraintTop_toBottomOf="@id/authorImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/isbn"
+        tools:ignore="ContentDescription"
         />
 
     <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        tools:ignore="ContentDescription"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:id="@+id/homeButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@id/line_separator"
         android:src="@drawable/home"
         android:backgroundTint="@android:color/transparent"
         />
@@ -42,8 +45,8 @@
 
     <ImageView
         android:id="@+id/bookImage"
-        android:layout_width="200dp"
-        android:layout_height="290dp"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
         android:scaleType="centerCrop"
         android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
@@ -59,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:maxLines="3"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toStartOf="@+id/shareButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,8 +70,8 @@
         app:layout_constraintTop_toBottomOf="@+id/bookImage" />
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:id="@+id/bookTypeIcon"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="16dp"
@@ -80,7 +83,7 @@
         android:id="@+id/bookType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@id/bookTypeIcon"
         app:layout_constraintTop_toBottomOf="@id/isbn"
         android:layout_marginTop="15dp"
@@ -98,12 +101,12 @@
         android:layout_marginStart="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
-        android:textSize="25sp"
+        android:textSize="20sp"
          />
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:id="@+id/authorImage"
         app:layout_constraintTop_toBottomOf="@id/bookName"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,7 +119,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/isbn"
-        android:textSize="20sp"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/authorImage"
         android:layout_marginStart="16dp"
@@ -124,15 +127,17 @@
          />
 
     <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:id="@+id/callDialer"
         android:src="@drawable/call_dialer"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@id/line_separator"
         android:backgroundTint="@android:color/transparent"
+        tools:ignore="ContentDescription"
         />
 
     <ImageButton
@@ -143,7 +148,23 @@
         android:backgroundTint="@android:color/transparent"
         android:src="@drawable/share_button"
         app:layout_constraintBottom_toBottomOf="@id/bookName"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription"/>
+
+    <TextView
+        android:id="@+id/bookDescription"
+        android:textStyle="normal"
+        android:textSize="15sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/bookTypeIcon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

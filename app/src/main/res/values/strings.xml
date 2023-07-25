@@ -7,4 +7,13 @@
     <string name="error_fetching_books">Error fetching books</string>
     <string name="retry">Retry</string>
     <string name="view">View</string>
+    <string name="error">Error</string>
+    <string name="invalid_view">Invalid view type </string>
+    <string name="finance_type">Finance</string>
+    <string name="sf_type">Fictional</string>
+    <string name="kids_type">Kids</string>
+    <string name="invalid_viewholder">Invalid ViewHolder</string>
+    <string name="book_not_found">Book object not found</string>
+    <string name="camera_denied">Camera permission denied</string>
+    <string name="search">Search</string>
 </resources>

@@ -14,20 +14,29 @@ import java.lang.IllegalArgumentException
 import android.Manifest
 import android.graphics.Bitmap
 import android.net.Uri
+import com.example.recyclerproject.MainActivity.Companion.BOOK_BUNDLE
 
 
 class DetailsActivity : AppCompatActivity() {
     private lateinit var book: Book
     private lateinit var binding: ActivityDetailsBinding
-    private val CAMERA_PERMISSION_REQUEST_CODE = 1001
-    private val CAMERA_REQUEST_CODE = 1002
+
+
+    companion object {
+        const val DATA = "data"
+        const val CAMERA_PERMISSION_REQUEST_CODE = 1001
+        const val CAMERA_REQUEST_CODE = 1002
+        const val APP_SUPPORT_NUMBER = "1234567890"
+        const val SHARE_TITLE = "Share Book Title"
+        const val PLAIN_TEXT = "text/plain"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        book = intent.getSerializableExtra("book") as? Book
-            ?: throw IllegalArgumentException("Book object not found")
+        book = intent.getSerializableExtra(BOOK_BUNDLE) as? Book
+            ?: throw IllegalArgumentException(this.getString(R.string.book_not_found))
 
         populateBookDetails()
 
@@ -52,6 +61,7 @@ class DetailsActivity : AppCompatActivity() {
             openDialer()
         }
 
+
     }
 
     private fun populateBookDetails() {
@@ -59,6 +69,8 @@ class DetailsActivity : AppCompatActivity() {
         binding.bookAuthor.text = book.authorName
         binding.bookType.text = book.bookType
         binding.isbn.text = book.isbn
+        binding.bookDescription.text = book.description
+
         if (book.favorite) {
             binding.bookFavorite.setImageResource(R.drawable.ic_favorite_selected)
         } else {
@@ -67,9 +79,9 @@ class DetailsActivity : AppCompatActivity() {
 
         binding.bookFavorite.isEnabled = false
         var bookType = when (book.bookType) {
-            "Finance" -> R.drawable.finance
-            "Fictional" -> R.drawable.fiction_type
-            "Kids" -> R.drawable.children_literature
+            this.getString(R.string.finance_type) -> R.drawable.finance
+            this.getString(R.string.sf_type) -> R.drawable.fiction_type
+            this.getString(R.string.kids_type) -> R.drawable.children_literature
             else -> {R.drawable.default_clip_art}
         }
         binding.bookTypeIcon.setImageResource(bookType)
@@ -101,7 +113,8 @@ class DetailsActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openCamera()
             } else {
-                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+                // move text to strings.xml and use it in activity with getString(R.string.ceva)
+                Toast.makeText(this, this.getString(R.string.camera_denied), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -109,7 +122,7 @@ class DetailsActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
-            val imageBitmap: Bitmap? = data?.extras?.get("data") as? Bitmap
+            val imageBitmap: Bitmap? = data?.extras?.get(DATA) as? Bitmap
             if (imageBitmap != null) {
                 binding.authorImage.setImageBitmap(imageBitmap)
             }
@@ -118,13 +131,13 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun shareBookTitle() {
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "text/plain"
+        shareIntent.type = PLAIN_TEXT
         shareIntent.putExtra(Intent.EXTRA_TEXT, book.bookName)
-        startActivity(Intent.createChooser(shareIntent, "Share Book Title"))
+        startActivity(Intent.createChooser(shareIntent, SHARE_TITLE))
     }
 
     private fun openDialer() {
-        val phoneNumber = "1234567890"
+        val phoneNumber = APP_SUPPORT_NUMBER
         val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
         startActivity(dialIntent)
     }
