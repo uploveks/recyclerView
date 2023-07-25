@@ -6,6 +6,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +16,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ProgressBar
 import android.widget.SearchView
+import android.widget.Switch
 import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,11 +38,13 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 
-class MainActivity : AppCompatActivity(), OnBookClickListener {
+class MainActivity : AppCompatActivity(), OnBookClickListener, SearchView.OnQueryTextListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bookAdapter: BookAdapter
+    private lateinit var searchView: SearchView
     private var isStaggeredLayout = false
     private var progressBar: ProgressBar? = null
+
 
     companion object {
         const val BOOK_BUNDLE = "book"
@@ -62,8 +67,8 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
 
         bookAdapter = BookAdapter(this, mutableListOf(), isStaggeredLayout, this)
 
-        binding.recyclerView.apply {
 
+        binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = bookAdapter
             itemAnimator = DefaultItemAnimator()
@@ -83,6 +88,18 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
 
             bookAdapter.notifyDataSetChanged()
         }
+
+        binding.searchBox.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                bookAdapter.filter.filter(s)
+            }
+        })
+
+
 
         fetchBooksFromServer()
 
@@ -171,55 +188,14 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
         startActivity(intent)
     }
 
-    /* override fun onQueryTextSubmit(constraint: String?): Boolean {
-        bookAdapter.filter.filter(constraint)
+     override fun onQueryTextSubmit(constraint: String?): Boolean {
+        //bookAdapter.filter.filter(constraint)
         return false
     }
 
     override fun onQueryTextChange(constraint: String?): Boolean {
         bookAdapter.filter.filter(constraint)
         return false
-    }*/
-
-    /* override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        val item = menu?.findItem(R.id.app_bar_search)
-        val searchView = item?.actionView as SearchView
-
-        searchView.setOnQueryTextListener(this)
-
-        item.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
-                bookAdapter.filter.filter("")
-                return true
-            }
-
-            override fun onMenuItemActionExpand(p0: MenuItem): Boolean {
-                return true
-            }
-        })
-        return true
-    }*/
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        val item = menu?.findItem(R.id.app_bar_search)
-        val searchView = item?.actionView as SearchView
-        //searchView.setOnQueryTextListener(this)
-        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                bookAdapter.filter.filter(newText)
-                return false
-            }
-        })
-
-        return super.onCreateOptionsMenu(menu)
     }
 }
 

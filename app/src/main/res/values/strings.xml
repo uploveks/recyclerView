@@ -16,4 +16,6 @@
     <string name="book_not_found">Book object not found</string>
     <string name="camera_denied">Camera permission denied</string>
     <string name="search">Search</string>
+    <string name="search_book">Search book</string>
+    <string name="no_results_found">No results found</string>
 </resources>

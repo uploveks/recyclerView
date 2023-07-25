@@ -36,7 +36,7 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
     }
 
     private var booksList: MutableList<Book> = arrayListOf()
-    private var filteredBooksList: MutableList<Book> = arrayListOf()
+    private var filteredBooks: MutableList<Book> = books
 
 
     inner class FinanceLinearViewHolder(private val binding: ItemFinanceBookBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -297,7 +297,7 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
         }
     }
     override fun getItemCount(): Int {
-        return books.size
+        return filteredBooks.size
     }
 
     fun updateBooks(newBooks: List<Book>) {
@@ -309,25 +309,22 @@ class BookAdapter(private val context: Context, private val books: MutableList<B
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val charString = constraint?.toString()?.trim() ?: ""
-                if (charString.isEmpty()) {
-                    filteredBooksList = books.toMutableList()
+                val charString = constraint?.toString()?.lowercase()?.trim() ?: ""
+                filteredBooks = if (charString.isEmpty()) {
+                    books.toMutableList()
                 } else {
-                    val filteredList = ArrayList<Book>()
-                    val filterPattern = constraint.toString().lowercase().trim()
-                    for (book in books) {
-                        if ((book.bookName?.lowercase()?.contains(charString, true) == true) || (book.authorName?.lowercase()?.contains(charString, true) == true)) {
-                            filteredList.add(book)
-                        }
-                    }
-                    filteredBooksList = filteredList
+                    val filteredList = books.filter {
+                        it.bookName?.lowercase()?.trim()?.contains(charString, true) == true ||
+                                it.authorName?.lowercase()?.trim()?.contains(charString, true) == true
+                    }.toMutableList()
+                    filteredList
                 }
-                return FilterResults().apply { values = filteredBooksList }
+                return FilterResults().apply { values = filteredBooks }
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 @Suppress("UNCHECKED_CAST")
-                filteredBooksList = results?.values as MutableList<Book>? ?: mutableListOf()
+                filteredBooks = results?.values as MutableList<Book>? ?: mutableListOf()
                 notifyDataSetChanged()
             }
         }
