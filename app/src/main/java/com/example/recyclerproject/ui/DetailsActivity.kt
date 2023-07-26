@@ -1,4 +1,4 @@
-package com.example.recyclerproject
+package com.example.recyclerproject.ui
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,7 +14,9 @@ import java.lang.IllegalArgumentException
 import android.Manifest
 import android.graphics.Bitmap
 import android.net.Uri
-import com.example.recyclerproject.MainActivity.Companion.BOOK_BUNDLE
+import com.example.recyclerproject.model.Book
+import com.example.recyclerproject.R
+import com.example.recyclerproject.ui.MainActivity.Companion.BOOK_BUNDLE
 
 
 class DetailsActivity : AppCompatActivity() {
@@ -82,7 +84,9 @@ class DetailsActivity : AppCompatActivity() {
             this.getString(R.string.finance_type) -> R.drawable.finance
             this.getString(R.string.sf_type) -> R.drawable.fiction_type
             this.getString(R.string.kids_type) -> R.drawable.children_literature
-            else -> {R.drawable.default_clip_art}
+            else -> {
+                R.drawable.default_clip_art
+            }
         }
         binding.bookTypeIcon.setImageResource(bookType)
 

@@ -1,7 +1,8 @@
-package com.example.recyclerproject
+package com.example.recyclerproject.ui
 
 
-import ApiInterface
+import BookViewModel
+import com.example.recyclerproject.network.ApiInterface
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,34 +10,18 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.SearchEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.ProgressBar
-import android.widget.SearchView
-import android.widget.Switch
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
+import com.example.recyclerproject.model.Book
+import com.example.recyclerproject.R
 import com.example.recyclerproject.databinding.ActivityMainBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.security.SecureRandom
-import java.security.cert.CertificateException
-import java.security.cert.X509Certificate
-import javax.net.ssl.SSLContext
-import javax.net.ssl.TrustManager
-import javax.net.ssl.X509TrustManager
+import androidx.activity.viewModels
+
+
 
 
 class MainActivity : AppCompatActivity(), OnBookClickListener {
@@ -44,6 +29,7 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
     private lateinit var bookAdapter: BookAdapter
     private var isStaggeredLayout = false
     private var progressBar: ProgressBar? = null
+    private val bookViewModel: BookViewModel by viewModels()
 
 
     companion object {
@@ -102,12 +88,27 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
             }
         })
 
+        bookViewModel.books.observe(this) { books ->
+            bookAdapter.updateBooks(books)
+        }
 
-        fetchBooksFromServer()
+        bookViewModel.errorMessage.observe(this) { errorMessage ->
+            showError(errorMessage)
+        }
+
+        bookViewModel.progressBarVisibility.observe(this) { isVisible ->
+            if (isVisible) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        }
+
+        bookViewModel.fetchBooksFromServer()
 
     }
 
-    private fun fetchBooksFromServer() {
+    /*private fun fetchBooksFromServer() {
         binding.progressBar.visibility = View.VISIBLE
 
         val trustAllCertificates = arrayOf<TrustManager>(
@@ -167,7 +168,7 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
                 }
             }
         }
-    }
+    }*/
 
 
     private fun showError(message: String) {
@@ -179,7 +180,7 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
             .into(binding.errorRetryLayout.errorImage)
         binding.errorRetryLayout.retryButton.setOnClickListener {
             binding.errorRetryLayout.root.visibility = View.GONE
-            fetchBooksFromServer()
+            bookViewModel.fetchBooksFromServer()
         }
         binding.switchLayout.visibility = View.GONE
     }

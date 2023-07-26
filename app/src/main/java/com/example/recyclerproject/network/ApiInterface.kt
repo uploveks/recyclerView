@@ -1,4 +1,6 @@
-import com.example.recyclerproject.Book
+package com.example.recyclerproject.network
+
+import com.example.recyclerproject.model.Book
 import retrofit2.Response
 import retrofit2.http.GET
 

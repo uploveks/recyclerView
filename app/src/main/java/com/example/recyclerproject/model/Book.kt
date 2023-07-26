@@ -1,4 +1,4 @@
-package com.example.recyclerproject
+package com.example.recyclerproject.model
 
 import java.io.Serializable
 

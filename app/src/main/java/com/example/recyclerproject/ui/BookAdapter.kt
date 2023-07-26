@@ -1,17 +1,15 @@
-package com.example.recyclerproject
+package com.example.recyclerproject.ui
 
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.core.content.res.TypedArrayUtils.getString
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.recyclerproject.R
 import java.lang.IllegalArgumentException
 import kotlin.collections.MutableList
 import com.example.recyclerproject.databinding.ItemFinanceBookBinding
@@ -20,7 +18,7 @@ import com.example.recyclerproject.databinding.ItemKidsBookBinding
 import com.example.recyclerproject.databinding.FinanceStaggeredBinding
 import com.example.recyclerproject.databinding.SfStaggeredBinding
 import com.example.recyclerproject.databinding.KidsStaggeredBinding
-import com.example.recyclerproject.OnBookClickListener
+import com.example.recyclerproject.model.Book
 
 class BookAdapter(
     private val context: Context,
@@ -51,7 +49,7 @@ class BookAdapter(
             binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val book = books[position]
+                    val book = filteredBooks[position]
                     listener.onBookClicked(book)
                 }
             }
@@ -59,8 +57,8 @@ class BookAdapter(
             binding.bookTrash.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val deletedBook = books[position]
-                    books.removeAt(position)
+                    val deletedBook = filteredBooks[position]
+                    filteredBooks.removeAt(position)
                     notifyItemRemoved(position)
                 }
             }
@@ -68,7 +66,7 @@ class BookAdapter(
 
             binding.bookFavorite.setOnCheckedChangeListener { button, isChecked ->
                 if (button.isPressed) {
-                    val book = books[adapterPosition]
+                    val book = filteredBooks[adapterPosition]
                     book.favorite = isChecked
                     notifyItemChanged(adapterPosition)
                 }
@@ -96,11 +94,10 @@ class BookAdapter(
     inner class KidsLinearViewHolder(private val binding: ItemKidsBookBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-
             binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val book = books[position]
+                    val book = filteredBooks[position]
                     listener.onBookClicked(book)
                 }
             }
@@ -108,15 +105,16 @@ class BookAdapter(
             binding.bookTrash.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val deletedBook = books[position]
-                    books.removeAt(position)
+                    val deletedBook = filteredBooks[position]
+                    filteredBooks.removeAt(position)
                     notifyItemRemoved(position)
                 }
             }
 
+
             binding.bookFavorite.setOnCheckedChangeListener { button, isChecked ->
                 if (button.isPressed) {
-                    val book = books[adapterPosition]
+                    val book = filteredBooks[adapterPosition]
                     book.favorite = isChecked
                     notifyItemChanged(adapterPosition)
                 }
@@ -146,7 +144,7 @@ class BookAdapter(
             binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val book = books[position]
+                    val book = filteredBooks[position]
                     listener.onBookClicked(book)
                 }
             }
@@ -154,15 +152,16 @@ class BookAdapter(
             binding.bookTrash.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val deletedBook = books[position]
-                    books.removeAt(position)
+                    val deletedBook = filteredBooks[position]
+                    filteredBooks.removeAt(position)
                     notifyItemRemoved(position)
                 }
             }
 
+
             binding.bookFavorite.setOnCheckedChangeListener { button, isChecked ->
                 if (button.isPressed) {
-                    val book = books[adapterPosition]
+                    val book = filteredBooks[adapterPosition]
                     book.favorite = isChecked
                     notifyItemChanged(adapterPosition)
                 }
@@ -192,7 +191,7 @@ class BookAdapter(
             binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val book = books[position]
+                    val book = filteredBooks[position]
                     listener.onBookClicked(book)
                 }
             }
@@ -214,7 +213,7 @@ class BookAdapter(
             binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val book = books[position]
+                    val book = filteredBooks[position]
                     listener.onBookClicked(book)
                 }
             }
@@ -236,7 +235,7 @@ class BookAdapter(
             binding.bookDetails.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val book = books[position]
+                    val book = filteredBooks[position]
                     listener.onBookClicked(book)
                 }
             }
