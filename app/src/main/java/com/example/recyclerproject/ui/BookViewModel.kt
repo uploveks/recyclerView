@@ -30,23 +30,23 @@ class BookViewModel : ViewModel() {
                 val response = bookRepository.getBooks()
                 withContext(Dispatchers.Main) {
                     _progressBarVisibility.value = false
-                    Log.d("view_model_books", "request made")
+                    //Log.d("view_model_books", "request made")
                     if (response.isSuccessful) {
-                        Log.d("view_model_books", "request successfull")
+                        //Log.d("view_model_books", "request successfull")
                         val books = response.body()
                         if (books != null) {
-                            Log.d("view_model_books", "books not null")
+                            //Log.d("view_model_books", "books not null")
                             _books.value = books ?: emptyList()
                         }
                     } else {
-                        Log.d("view_model_books", "showError(ERROR_MESSAGE_TEXT)")
+                        //Log.d("view_model_books", "showError(ERROR_MESSAGE_TEXT)")
                         showError(ERROR_MESSAGE_TEXT)
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     _progressBarVisibility.value = false
-                    Log.d("view_model_books", e.message.toString())
+                    //Log.d("view_model_books", e.message.toString())
                     _errorMessage.value = "$ERROR_MESSAGE_TEXT: ${e.message}"
                 }
             }
