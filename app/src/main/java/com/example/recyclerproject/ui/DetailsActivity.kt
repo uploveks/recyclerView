@@ -1,21 +1,20 @@
 package com.example.recyclerproject.ui
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.example.recyclerproject.databinding.ActivityDetailsBinding
-import java.lang.IllegalArgumentException
-import android.Manifest
-import android.graphics.Bitmap
-import android.net.Uri
-import com.example.recyclerproject.model.Book
 import com.example.recyclerproject.R
+import com.example.recyclerproject.databinding.ActivityDetailsBinding
+import com.example.recyclerproject.model.Book
 import com.example.recyclerproject.ui.MainActivity.Companion.BOOK_BUNDLE
 
 
@@ -32,6 +31,7 @@ class DetailsActivity : AppCompatActivity() {
         const val SHARE_TITLE = "Share Book Title"
         const val PLAIN_TEXT = "text/plain"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailsBinding.inflate(layoutInflater)
@@ -48,7 +48,11 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         binding.bookImage.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 openCamera()
             } else {
                 requestCameraPermission()
@@ -90,8 +94,10 @@ class DetailsActivity : AppCompatActivity() {
         }
         binding.bookTypeIcon.setImageResource(bookType)
 
-        Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher).into(binding.bookImage)
-        Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher).into(binding.authorImage)
+        Glide.with(binding.root).load(book.bookImage).error(R.mipmap.ic_launcher)
+            .into(binding.bookImage)
+        Glide.with(binding.root).load(book.authorImage).error(R.mipmap.ic_launcher)
+            .into(binding.authorImage)
     }
 
     private fun requestCameraPermission() {
@@ -117,8 +123,8 @@ class DetailsActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openCamera()
             } else {
-                // move text to strings.xml and use it in activity with getString(R.string.ceva)
-                Toast.makeText(this, this.getString(R.string.camera_denied), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, this.getString(R.string.camera_denied), Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

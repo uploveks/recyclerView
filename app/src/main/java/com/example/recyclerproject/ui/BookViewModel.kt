@@ -1,4 +1,3 @@
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,7 +31,7 @@ class BookViewModel : ViewModel() {
                     _progressBarVisibility.value = false
                     //Log.d("view_model_books", "request made")
                     if (response.isSuccessful) {
-                        //Log.d("view_model_books", "request successfull")
+                        //Log.d("view_model_books", "request successfully")
                         val books = response.body()
                         if (books != null) {
                             //Log.d("view_model_books", "books not null")
@@ -47,7 +46,7 @@ class BookViewModel : ViewModel() {
                 withContext(Dispatchers.Main) {
                     _progressBarVisibility.value = false
                     //Log.d("view_model_books", e.message.toString())
-                    _errorMessage.value = "$ERROR_MESSAGE_TEXT: ${e.message}"
+                    showError("$ERROR_MESSAGE_TEXT: ${e.message}")
                 }
             }
         }

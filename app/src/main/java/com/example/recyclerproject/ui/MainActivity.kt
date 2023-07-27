@@ -2,32 +2,29 @@ package com.example.recyclerproject.ui
 
 
 import BookViewModel
-import com.example.recyclerproject.network.ApiInterface
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
-import com.example.recyclerproject.model.Book
 import com.example.recyclerproject.R
 import com.example.recyclerproject.databinding.ActivityMainBinding
-import androidx.activity.viewModels
-
-
+import com.example.recyclerproject.model.Book
 
 
 class MainActivity : AppCompatActivity(), OnBookClickListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bookAdapter: BookAdapter
     private var isStaggeredLayout = false
+    private var isFavoriteBooks = false
     private var progressBar: ProgressBar? = null
     private val bookViewModel: BookViewModel by viewModels()
 
@@ -36,10 +33,7 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
         const val BOOK_BUNDLE = "book"
         const val ERROR_ICON_URL =
             "https://icon-library.com/images/error-icon-transparent/error-icon-transparent-5.jpg"
-        const val LOG_TAG = "Network"
         const val ERROR_MESSAGE_TEXT = "Error fetching books from server"
-        const val JSON_KEEPER = "https://jsonkeeper.com/"
-        const val ERROR_MESSAGE = "Error fetching books:"
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -51,18 +45,22 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
         progressBar = binding.progressBar
         progressBar?.visibility = View.VISIBLE
 
-        //val filteredBooks = ArrayList<Book>()
         bookAdapter = BookAdapter(this, mutableListOf(), isStaggeredLayout, this)
-        //bookAdapter.setFilteredBooks(filteredBooks)
+        setupAdapter()
+        setupViewLayout()
+        setupSearchBar()
+        setupObservers()
+    }
 
+    private fun setupAdapter() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = bookAdapter
             itemAnimator = DefaultItemAnimator()
         }
+    }
 
-
-
+    private fun setupViewLayout() {
         binding.switchLayout.setOnCheckedChangeListener { _, isChecked ->
             isStaggeredLayout = isChecked
             if (isStaggeredLayout) {
@@ -76,7 +74,9 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
 
             bookAdapter.notifyDataSetChanged()
         }
+    }
 
+    private fun setupSearchBar() {
         val editTextSearch = binding.searchBox.searchEditText
         editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -87,13 +87,21 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
                 bookAdapter.filter.filter(s.toString())
             }
         })
+    }
 
+    /*private fun filterFavoriteBooks() {
+        val favoriteListButton = binding.favoriteBooks.setOnClickListener {
+            val onlyFavorites = binding.favoriteBooks.isClic
+        }
+    }*/
+
+    private fun setupObservers() {
         bookViewModel.books.observe(this) { books ->
             bookAdapter.updateBooks(books)
         }
 
-        bookViewModel.errorMessage.observe(this) { errorMessage ->
-            showError(errorMessage)
+        bookViewModel.errorMessage.observe(this) {
+            showError()
         }
 
         bookViewModel.progressBarVisibility.observe(this) { isVisible ->
@@ -105,74 +113,9 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
         }
 
         bookViewModel.fetchBooksFromServer()
-
     }
 
-    /*private fun fetchBooksFromServer() {
-        binding.progressBar.visibility = View.VISIBLE
-
-        val trustAllCertificates = arrayOf<TrustManager>(
-            object : X509TrustManager {
-                @Throws(CertificateException::class)
-                override fun checkClientTrusted(
-                    chain: Array<out X509Certificate>?,
-                    authType: String?
-                ) {
-                }
-
-                @Throws(CertificateException::class)
-                override fun checkServerTrusted(
-                    chain: Array<out X509Certificate>?,
-                    authType: String?
-                ) {
-                }
-
-                override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-            }
-        )
-        val sslContext = SSLContext.getInstance("TLS")
-        sslContext.init(null, trustAllCertificates, SecureRandom())
-
-        val unsafeOkHttpClient = OkHttpClient.Builder()
-            .sslSocketFactory(sslContext.socketFactory, trustAllCertificates[0] as X509TrustManager)
-            .hostnameVerifier { _, _ -> true }
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(JSON_KEEPER)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(unsafeOkHttpClient)
-            .build()
-
-        val apiInterface = retrofit.create(ApiInterface::class.java)
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val response = apiInterface.getBooks()
-                withContext(Dispatchers.Main) {
-                    binding.progressBar.visibility = View.GONE
-
-                    if (response.isSuccessful) {
-                        val books = response.body()
-                        if (books != null) {
-                            bookAdapter.updateBooks(books)
-                        }
-                    } else {
-                        showError(ERROR_MESSAGE_TEXT)
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    binding.progressBar.visibility = View.GONE
-                    Log.e(LOG_TAG, ERROR_MESSAGE + "${e.message}")
-                    showError(ERROR_MESSAGE + "${e.message}")
-                }
-            }
-        }
-    }*/
-
-
-    private fun showError(message: String) {
-        //Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+    private fun showError() {
         binding.errorRetryLayout.root.visibility = View.VISIBLE
         Glide.with(this@MainActivity)
             .load(ERROR_ICON_URL)
@@ -191,14 +134,5 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
         startActivity(intent)
     }
 
-     /*override fun onQueryTextSubmit(constraint: String?): Boolean {
-        //bookAdapter.filter.filter(constraint)
-        return false
-    }
-
-    override fun onQueryTextChange(constraint: String?): Boolean {
-        bookAdapter.filter.filter(constraint)
-        return false
-    }*/
 }
 
