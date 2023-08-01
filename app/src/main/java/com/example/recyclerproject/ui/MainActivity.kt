@@ -1,7 +1,6 @@
 package com.example.recyclerproject.ui
 
 
-import BookViewModel
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +10,7 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
     private var isStaggeredLayout = false
     private var isFavoriteBooks = false
     private var progressBar: ProgressBar? = null
-    private val bookViewModel: BookViewModel by viewModels()
+    private val bookViewModel: BookViewModel by viewModels { BookViewModel.Factory }
 
 
     companion object {
@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         progressBar = binding.progressBar
         progressBar?.visibility = View.VISIBLE
 
@@ -117,9 +116,7 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
 
     private fun showError() {
         binding.errorRetryLayout.root.visibility = View.VISIBLE
-        Glide.with(this@MainActivity)
-            .load(ERROR_ICON_URL)
-            .error(R.mipmap.ic_launcher)
+        Glide.with(this@MainActivity).load(ERROR_ICON_URL).error(R.mipmap.ic_launcher)
             .into(binding.errorRetryLayout.errorImage)
         binding.errorRetryLayout.retryButton.setOnClickListener {
             binding.errorRetryLayout.root.visibility = View.GONE

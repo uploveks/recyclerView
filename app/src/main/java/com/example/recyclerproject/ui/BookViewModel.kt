@@ -1,23 +1,53 @@
+package com.example.recyclerproject.ui
+
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.recyclerproject.data.BookDataSourceImplementation
-import com.example.recyclerproject.data.BookLocalDataSource
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.recyclerproject.BookApplication
+import com.example.recyclerproject.data.BookDataBase
+import com.example.recyclerproject.data.NetworkDataSourceImplementation
+import com.example.recyclerproject.data.LocalDataSourceImplementation
 import com.example.recyclerproject.data.BookRepository
 import com.example.recyclerproject.model.Book
 import com.example.recyclerproject.network.ApiInterface
+import com.example.recyclerproject.network.RetrofitInstance
 import com.example.recyclerproject.ui.MainActivity.Companion.ERROR_MESSAGE_TEXT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class BookViewModel(private val localDataSource: BookLocalDataSource, private val apiInterface: ApiInterface) : ViewModel() {
 
-    private val bookRepository = BookRepository(
-        BookDataSourceImplementation(localDataSource, apiInterface),
-        localDataSource
-    )
+class BookViewModel(private val repository: BookRepository) : ViewModel() {
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                Log.d("text_context", "factory initializer")
+                val repository = BookRepository(
+                    NetworkDataSourceImplementation(
+                        RetrofitInstance.retrofit.create(
+                            ApiInterface::class.java
+                        )
+                    ),
+                    LocalDataSourceImplementation(
+                        BookDataBase.getDataBase(BookApplication.getApplicationContext()!!)
+                            ?.bookDao()!!
+                    )
+                )
+                Log.d("text_context", "after val repository")
+                BookViewModel(
+                    repository
+                )
+            }
+            Log.d("text_context", "after initializer")
+        }
+    }
+
 
     private val _books = MutableLiveData<List<Book>>()
     val books: LiveData<List<Book>> get() = _books
@@ -33,7 +63,8 @@ class BookViewModel(private val localDataSource: BookLocalDataSource, private va
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = bookRepository.getBooks()
+                val response = repository.getBooks()
+                Log.d("text_context", "repository get books")
                 withContext(Dispatchers.Main) {
                     _progressBarVisibility.value = false
                     if (response.isNotEmpty()) {
