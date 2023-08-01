@@ -1,12 +1,22 @@
+package com.example.recyclerproject.data
+
 import com.example.recyclerproject.model.Book
-import com.example.recyclerproject.network.ApiInterface
-import com.example.recyclerproject.network.RetrofitInstance
-import retrofit2.Response
 
-class BookRepository {
-    private val apiInterface = RetrofitInstance.retrofit.create(ApiInterface::class.java)
+class BookRepository(
+    private val remoteDataSource: BookDataSource,
+    private val localDataSource: BookLocalDataSource
+) {
+    private var books: List<Book> = emptyList()
 
-    suspend fun getBooks(): Response<List<Book>> {
-        return apiInterface.getBooks()
+    suspend fun getBooks(): List<Book> {
+        if (books.isEmpty()) {
+            books = fetchBooksFromServer()
+            localDataSource.insertAll(books)
+        }
+        return books
+    }
+
+    private suspend fun fetchBooksFromServer(): List<Book> {
+        return remoteDataSource.getBooks()
     }
 }

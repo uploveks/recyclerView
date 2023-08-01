@@ -2,15 +2,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.recyclerproject.data.BookDataSourceImplementation
+import com.example.recyclerproject.data.BookLocalDataSource
+import com.example.recyclerproject.data.BookRepository
 import com.example.recyclerproject.model.Book
+import com.example.recyclerproject.network.ApiInterface
 import com.example.recyclerproject.ui.MainActivity.Companion.ERROR_MESSAGE_TEXT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class BookViewModel : ViewModel() {
+class BookViewModel(private val localDataSource: BookLocalDataSource, private val apiInterface: ApiInterface) : ViewModel() {
 
-    private val bookRepository = BookRepository()
+    private val bookRepository = BookRepository(
+        BookDataSourceImplementation(localDataSource, apiInterface),
+        localDataSource
+    )
 
     private val _books = MutableLiveData<List<Book>>()
     val books: LiveData<List<Book>> get() = _books
@@ -29,23 +36,15 @@ class BookViewModel : ViewModel() {
                 val response = bookRepository.getBooks()
                 withContext(Dispatchers.Main) {
                     _progressBarVisibility.value = false
-                    //Log.d("view_model_books", "request made")
-                    if (response.isSuccessful) {
-                        //Log.d("view_model_books", "request successfully")
-                        val books = response.body()
-                        if (books != null) {
-                            //Log.d("view_model_books", "books not null")
-                            _books.value = books ?: emptyList()
-                        }
+                    if (response.isNotEmpty()) {
+                        _books.value = response
                     } else {
-                        //Log.d("view_model_books", "showError(ERROR_MESSAGE_TEXT)")
                         showError(ERROR_MESSAGE_TEXT)
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     _progressBarVisibility.value = false
-                    //Log.d("view_model_books", e.message.toString())
                     showError("$ERROR_MESSAGE_TEXT: ${e.message}")
                 }
             }
