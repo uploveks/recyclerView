@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
         setupViewLayout()
         setupSearchBar()
         setupObservers()
+        filterFavoriteBooks()
+        goBackHome()
     }
 
     private fun setupAdapter() {
@@ -88,11 +90,18 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
         })
     }
 
-    /*private fun filterFavoriteBooks() {
-        val favoriteListButton = binding.favoriteBooks.setOnClickListener {
-            val onlyFavorites = binding.favoriteBooks.isClic
+    private fun filterFavoriteBooks() {
+        val favoriteBooks = binding.favoriteBooks
+        favoriteBooks.setOnClickListener {
+            bookAdapter.filter.filter("true")
         }
-    }*/
+    }
+
+    private fun goBackHome() {
+        binding.homeButton.setOnClickListener {
+            bookAdapter.filter.filter("home")
+        }
+    }
 
     private fun setupObservers() {
         bookViewModel.books.observe(this) { books ->
@@ -130,6 +139,7 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
         intent.putExtra(BOOK_BUNDLE, book)
         startActivity(intent)
     }
+
 
 }
 

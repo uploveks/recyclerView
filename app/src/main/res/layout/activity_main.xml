@@ -11,8 +11,32 @@
         android:id="@+id/search_box"
         layout="@layout/search_layout" />
 
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/favorite_books"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/home_button"
+        android:layout_toEndOf="@id/search_box"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:src="@drawable/ic_favorite_selected"
+        android:backgroundTint="@android:color/transparent"
+        android:clickable="true"
+        android:focusable="true" />
 
-
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/home_button"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/baseline_home_24"
+        android:backgroundTint="@android:color/transparent"
+        android:clickable="true"
+        android:focusable="true" />
 
 
 <androidx.recyclerview.widget.RecyclerView
@@ -23,17 +47,6 @@
     android:layout_below="@+id/search_box"
     />
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/favorite_books"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_favorite_selected"
-        android:backgroundTint="@android:color/transparent"
-        />
 
     <Switch
         android:layout_width="wrap_content"
@@ -65,16 +78,15 @@
         />
 
     <TextView
+        android:id="@+id/no_results_found"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/no_results_found"
+        android:layout_below="@+id/search_box"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
         android:text="@string/no_results_found"
         android:textAppearance="?attr/textAppearanceHeadline4"
-        android:visibility="invisible"
-        android:layout_below="@+id/search_box"
-        android:layout_marginTop="30dp"
-        android:layout_centerInParent="true"
-    />
+        android:visibility="invisible" />
 
 
 </RelativeLayout>

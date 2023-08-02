@@ -345,9 +345,13 @@ class BookAdapter(
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 Log.d("test_adapter", "non filtered size: " + books.size)
                 val charString = constraint?.toString()?.lowercase()?.trim() ?: ""
-              val  filteredBooks = if (charString.isEmpty()) {
+              val  filteredBooks = if (charString.isEmpty() || charString == "home") {
                     books.toMutableList()
-                } else {
+                } else if (charString == "true") {
+                    Log.d("test_favorites", "a intrat")
+                    val filteredFavorites = books.filter {it.favorite}.toMutableList()
+                    filteredFavorites
+              } else{
                     val filteredList = books.filter {
                         it.bookName?.lowercase()?.contains(charString, true) == true ||
                                 it.authorName?.lowercase()?.contains(charString, true) == true
@@ -370,6 +374,7 @@ class BookAdapter(
             }
         }
     }
+
 
 }
 
